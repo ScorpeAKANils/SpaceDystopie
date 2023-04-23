@@ -35449,6 +35449,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 641567262074098672, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f131dcd5bf3e61e48af5f03ca4de9698, type: 2}
+    - target: {fileID: 641567262074098672, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4cabe92342653de4198428dc23c7b7fc, type: 2}
+    - target: {fileID: 641567262074098672, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8447b6cf4b1c14a33bedefdd4b7978c4, type: 2}
+    - target: {fileID: 641567262074098672, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: dd0d6ecba075c4b85b72fd345316e347, type: 2}
+    - target: {fileID: 2244722975978765135, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7952346397873701267, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ae378a0a163594152a1178d37dda2574, type: 2}
+    - target: {fileID: 8360300295370083959, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8702266211066599402, guid: 281e4f244103642fd83d597ce0fd751c, type: 3}
       propertyPath: m_Name
       value: PlayerCapsule

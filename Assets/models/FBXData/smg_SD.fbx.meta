@@ -3,7 +3,32 @@ guid: 0e083c72a17f441efbc2df0673595f6a
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GunBody
+    second: {fileID: 2100000, guid: d9d3f4614150cf9448b57718aa7bdfb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 4ed27b2befb14ad428a695deb8dd37bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 9717e44a4cb726b4db195c9f9e3776b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: b26d34da64d411a4db663df68c619a60, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SCOPE
+    second: {fileID: 2100000, guid: 4c67d7af49c6b3e43ba095399f9044d2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
