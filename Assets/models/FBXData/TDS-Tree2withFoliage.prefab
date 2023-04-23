@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 6006187952520789976}
   - component: {fileID: 7274896195157520509}
   - component: {fileID: 4832759058788549815}
-  - component: {fileID: 3655501633802723621}
+  - component: {fileID: 2135976960429332067}
   m_Layer: 0
   m_Name: TDS-Tree2withFoliage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6006187952520789976
 Transform:
@@ -85,8 +85,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3655501633802723621
-MeshCollider:
+--- !u!136 &2135976960429332067
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,7 +95,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3579036805119581666, guid: 7c6c28d9212eb2449a56c9d178f85fcb, type: 3}
+  m_Radius: 0.52776295
+  m_Height: 5.9622993
+  m_Direction: 1
+  m_Center: {x: 0, y: 3.144514, z: 0.06744433}
