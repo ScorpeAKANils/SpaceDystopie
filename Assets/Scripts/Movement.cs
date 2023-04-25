@@ -15,13 +15,13 @@ public class Movement : MonoBehaviour
     private float groundDist = 0.1f;
     public LayerMask GroundLayer;
     [SerializeField] float jumpTime;
-     private  bool canClimp = false;
+    private bool canClimp = false;
     [SerializeField] private Firering[] gunScript;
     private bool isSprinting = false;
-    private  bool isCrouching = false;
+    private bool isCrouching = false;
     private bool leftWallNearby;
-    private  bool rightWallNearBy;
-    [SerializeField] private  Transform[] wallChecks;
+    private bool rightWallNearBy;
+    [SerializeField] private Transform[] wallChecks;
     public GameObject playerView;
     public float lerpTime;
     public Transform idlePos;
@@ -31,7 +31,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private GameObject Radius;
     public bool weaponInUse = false;
     private float timePassed;
-    private  bool isLeaning;
+    private bool isLeaning;
     private bool useGravity = true;
     private bool reverseGravitation = false;
     public MouseLoock mL;
@@ -166,7 +166,7 @@ public class Movement : MonoBehaviour
             playerView.transform.rotation = idlePos.rotation;
             playerView.transform.position = idlePos.position;
             rightWallNearBy = false;
-            leftWallNearby = false; 
+            leftWallNearby = false;
             useGravity = true;
         }
 
@@ -244,7 +244,7 @@ public class Movement : MonoBehaviour
         }
     }
     //ground check
-    bool HandleIsGrounded()
+    private bool HandleIsGrounded()
     {
         if (Physics.CheckSphere(playerFeet.position, groundDist, GroundLayer))
         {
@@ -283,7 +283,7 @@ public class Movement : MonoBehaviour
             if (wall.transform.CompareTag("Building"))
             {
                 jumpHight = 0f;
-                useGravity = false; 
+                useGravity = false;
                 Debug.Log("is on wall");
                 wallNearBy = true;
                 return wallNearBy;
@@ -308,7 +308,7 @@ public class Movement : MonoBehaviour
         //leiter check 
         if (other.CompareTag("MagnetLeiter2"))
         {
-            useGravity = false; 
+            useGravity = false;
             canClimp = true;
         }
     }
@@ -319,7 +319,7 @@ public class Movement : MonoBehaviour
         {
 
             //gravity = gravBase;
-            useGravity = true; 
+            useGravity = true;
             canClimp = false;
         }
     }
