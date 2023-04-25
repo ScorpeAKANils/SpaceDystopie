@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform playerFeet;
     [SerializeField] private Animator camAnim;
     private bool isWalking = false;
-    private float groundDist = 0.1f;
+    private float groundDist = 0.2f;
     public LayerMask GroundLayer;
     [SerializeField] float jumpTime;
     private bool canClimp = false;
