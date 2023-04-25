@@ -263,11 +263,11 @@ public class Movement : MonoBehaviour
     private bool leftWallRun(ref bool wallNearBy)
     {
         RaycastHit wall;
-        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.left), out wall, 1f))
+        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.right), out wall, 1f))
         {
             if (wall.transform.CompareTag("Building"))
             {
-                jumpHight = 0f;
+                jumpHight = 3f;
                 useGravity = false;
                 wallNearBy = true;
                 return wallNearBy;
@@ -282,7 +282,7 @@ public class Movement : MonoBehaviour
         {
             if (wall.transform.CompareTag("Building"))
             {
-                jumpHight = 0f;
+                jumpHight = 3f;
                 useGravity = false;
                 Debug.Log("is on wall");
                 wallNearBy = true;
