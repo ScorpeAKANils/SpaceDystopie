@@ -85,10 +85,11 @@ public class Movement : MonoBehaviour
         if (HandleIsGrounded())
         {
             jumpCounter = 0;
-            isJumping = false;
         }
-        if (Input.GetButtonDown("Jump") && (HandleIsGrounded() | jumpCounter < 2))
+        if (Input.GetButtonDown("Jump") && (HandleIsGrounded()) || (Input.GetButtonDown("Jump") && jumpCounter <= 1))
         {
+            Debug.Log("jump counter: " + jumpCounter); 
+            isJumping = true;
             jumpCounter++;
             moveDirection.y += Mathf.Sqrt(jumpForce * jumpHight * gravity) * Time.fixedDeltaTime;
             Debug.Log("total jumppower: " + Mathf.Sqrt(jumpForce * jumpHight * gravity) * Time.fixedDeltaTime + "jump force: " + jumpForce + "Jump Hight" + jumpHight + "gravity: " + gravity +
@@ -247,8 +248,7 @@ public class Movement : MonoBehaviour
     private bool HandleIsGrounded()
     {
         if (Physics.CheckSphere(playerFeet.position, groundDist, GroundLayer))
-        {
-            isJumping = true;
+        { 
             if (!reverseGravitation && jumpCounter == 2 && roofRun)
             {
                 reverseGravitation = true;
