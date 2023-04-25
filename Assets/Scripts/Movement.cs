@@ -259,9 +259,6 @@ public class Movement : MonoBehaviour
         }
         return false;
     }
-
-
-
     //wall run check
     private bool leftWallRun(ref bool wallNearBy)
     {
@@ -278,8 +275,6 @@ public class Movement : MonoBehaviour
         }
         return false;
     }
-
-
     private bool rightWallRun(ref bool wallNearBy)
     {
         RaycastHit wall;
@@ -296,7 +291,6 @@ public class Movement : MonoBehaviour
         }
         return false;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         //ausserhalb des gebäudes = stopp reverse gravitation
@@ -318,9 +312,9 @@ public class Movement : MonoBehaviour
             canClimp = true;
         }
     }
-    //klettern net mehr verfügbar 
     private void OnTriggerExit(Collider other)
     {
+        //klettern net mehr verfügbar 
         if (other.CompareTag("MagnetLeiter2"))
         {
 
@@ -329,5 +323,4 @@ public class Movement : MonoBehaviour
             canClimp = false;
         }
     }
-
 }
