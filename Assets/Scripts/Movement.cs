@@ -211,6 +211,7 @@ public class Movement : MonoBehaviour
             {
                 isLeaning = true;
                 playerView.transform.rotation = leftLean.rotation;
+                playerView.transform.position = leftLean.position;
             }
 
         }
@@ -226,6 +227,7 @@ public class Movement : MonoBehaviour
             {
                 isLeaning = true;
                 playerView.transform.rotation = rightLean.rotation;
+                playerView.transform.position = rightLean.position;
             }
         }
         //stopp lehnen 
