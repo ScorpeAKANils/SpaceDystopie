@@ -7,49 +7,66 @@ public class Movement : MonoBehaviour
 {
     //[SerializeField]float speed= 10f;
     private float baseSpeed;
-    [SerializeField] private float jumpForce = 10f;
+
     private float gravBase;
-    [SerializeField] private Transform playerFeet;
-    [SerializeField] private Animator camAnim;
+
     private bool isWalking = false;
     private float groundDist = 0.2f;
     public LayerMask GroundLayer;
-    [SerializeField] float jumpTime;
+
     private bool canClimp = false;
-    [SerializeField] private Firering[] gunScript;
+
     private bool isSprinting = false;
     private bool isCrouching = false;
     private bool leftWallNearby;
     private bool rightWallNearBy;
-    [SerializeField] private Transform[] wallChecks;
+    private float timePassed;
+    private bool isLeaning;
+    private bool useGravity = true;
+    private bool reverseGravitation = false;
+    private bool roofRun;
+    private float jumpHight = 10f;
+    private float jumpHightRef;
+    private int jumpCounter = 0;
+    private Vector3 moveDirection = Vector3.zero;
+    private CharacterController controller;
+    private bool isJumping;
+    private bool isWallRunning = false;
+
+    [SerializeField]
+    private Transform playerFeet;
+    [SerializeField]
+    private Animator camAnim;
+    [SerializeField]
+    private float jumpForce = 10f;
+    [SerializeField]
+    float jumpTime;
+    [SerializeField]
+    private Firering[] gunScript;
+    [SerializeField]
+    private GameObject Radius;
+    [SerializeField]
+    private float mass = 85f;
+    [SerializeField]
+    private Transform[] wallChecks;
+    [SerializeField]
+    private LayerMask wallLayer;
+
     public GameObject playerView;
     public float lerpTime;
     public Transform idlePos;
     public Transform reversePos;
     public Transform leftLean;
     public Transform rightLean;
-    [SerializeField] private GameObject Radius;
     public bool weaponInUse = false;
-    private float timePassed;
-    private bool isLeaning;
-    private bool useGravity = true;
-    private bool reverseGravitation = false;
     public MouseLoock mL;
-    [SerializeField] private float mass = 85f;
-    private bool roofRun;
-    private float jumpHight = 10f;
-    private float jumpHightRef;
     public float speed = 6f;            // Die Geschwindigkeit, mit der sich der Charakter bewegt
     public float jumpSpeed = 8f;        // Die Geschwindigkeit, mit der der Charakter springt
     public float gravity = 20f;         // Die Gravitation, die auf den Charakter wirkt
-    int jumpCounter = 0;
     public int WeaponIndex;
 
-    private Vector3 moveDirection = Vector3.zero;
-    private CharacterController controller;
-    private bool isJumping;
 
-    void Start()
+    private void Start()
     {
         jumpHightRef = jumpHight;
         Debug.Log("start als update lel");
@@ -59,7 +76,7 @@ public class Movement : MonoBehaviour
         baseSpeed = speed;
     }
 
-    void Update()
+    private void Update()
     {
         // Input abrufen
         //originalRotation = transform.localRotation;
@@ -88,7 +105,7 @@ public class Movement : MonoBehaviour
         }
         if (Input.GetButtonDown("Jump") && (HandleIsGrounded()) || (Input.GetButtonDown("Jump") && jumpCounter <= 1))
         {
-            Debug.Log("jump counter: " + jumpCounter); 
+            Debug.Log("jump counter: " + jumpCounter);
             isJumping = true;
             jumpCounter++;
             moveDirection.y += Mathf.Sqrt(jumpForce * jumpHight * gravity) * Time.fixedDeltaTime;
@@ -141,35 +158,43 @@ public class Movement : MonoBehaviour
         //guck mal nach, dass der Spieler in der nähe einer Wand ist
         if (!useGravity)
         {
-            rightWallRun(ref rightWallNearBy);
-            leftWallRun(ref leftWallNearby);
+            rightWallRun();
+            leftWallRun();
         }
 
         //wall run
-        if (isJumping && leftWallRun(ref leftWallNearby) && useGravity && jumpCounter < 2)
+        if (isJumping && leftWallRun() && useGravity && jumpCounter != 0)
         {
+            /*playerView.transform.rotation = leftLean.rotation;
+            playerView.transform.position = leftLean.position;*/
+            isWallRunning = true;
+            Debug.Log("isWallRunning: " + isWallRunning);
             useGravity = false;
-            playerView.transform.rotation = leftLean.rotation;
-            playerView.transform.position = leftLean.position;
         }
 
-        if (isJumping && rightWallRun(ref rightWallNearBy) && useGravity && jumpCounter < 2)
+        if (isJumping && rightWallRun() && useGravity && jumpCounter != 0)
         {
+            /*playerView.transform.rotation = rightLean.rotation;
+            playerView.transform.position = rightLean.position;*/
+            isWallRunning = true;
+            Debug.Log("isWallRunning: " + isWallRunning);
             useGravity = false;
-            playerView.transform.rotation = rightLean.rotation;
-            playerView.transform.position = rightLean.position;
         }
 
-        //spieler stoppt wall running
-        if (!rightWallRun(ref rightWallNearBy) | !leftWallRun(ref leftWallNearby))
-        {
-            jumpHight = jumpHightRef;
-            playerView.transform.rotation = idlePos.rotation;
-            playerView.transform.position = idlePos.position;
-            rightWallNearBy = false;
-            leftWallNearby = false;
-            useGravity = true;
-        }
+        ////spieler stoppt wall running
+            if (!rightWallRun() &&rightWallNearBy || !leftWallRun() && leftWallNearby)
+            {
+                Debug.Log("beginne zu fallen");
+                jumpHight = jumpHightRef;
+                playerView.transform.rotation = idlePos.rotation;
+                playerView.transform.position = idlePos.position;
+                rightWallNearBy = false;
+                leftWallNearby = false;
+                useGravity = true;
+                isWallRunning = false;
+                Debug.Log("sollte gefallen sein");
+            }
+        
 
         //spieler soll sich ducken 
         if (Input.GetKey(KeyCode.C))
@@ -248,7 +273,7 @@ public class Movement : MonoBehaviour
     private bool HandleIsGrounded()
     {
         if (Physics.CheckSphere(playerFeet.position, groundDist, GroundLayer))
-        { 
+        {
             if (!reverseGravitation && jumpCounter == 2 && roofRun)
             {
                 reverseGravitation = true;
@@ -260,37 +285,34 @@ public class Movement : MonoBehaviour
         return false;
     }
     //wall run check
-    private bool leftWallRun(ref bool wallNearBy)
+   
+    private bool leftWallRun()
     {
         RaycastHit wall;
-        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.right), out wall, 1f))
+        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.left), out wall, 1f, wallLayer))
         {
-            if (wall.transform.CompareTag("Building"))
-            {
-                jumpHight = 3f;
-                useGravity = false;
-                wallNearBy = true;
-                return wallNearBy;
-            }
+            jumpHight = 3f;
+            useGravity = false;
+            leftWallNearby = true;
+            return true;
         }
         return false;
     }
-    private bool rightWallRun(ref bool wallNearBy)
+   
+    private bool rightWallRun()
     {
         RaycastHit wall;
-        if (Physics.Raycast(wallChecks[1].transform.position, wallChecks[1].TransformDirection(Vector3.left), out wall, 1f))
+        if (Physics.Raycast(wallChecks[1].transform.position, wallChecks[1].TransformDirection(Vector3.right), out wall, 1f, wallLayer))
         {
-            if (wall.transform.CompareTag("Building"))
-            {
-                jumpHight = 3f;
-                useGravity = false;
-                Debug.Log("is on wall");
-                wallNearBy = true;
-                return wallNearBy;
-            }
+            jumpHight = 3f;
+            useGravity = false;
+            Debug.Log("is on wall");
+            rightWallNearBy = true;
+            return true;
         }
         return false;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         //ausserhalb des gebäudes = stopp reverse gravitation

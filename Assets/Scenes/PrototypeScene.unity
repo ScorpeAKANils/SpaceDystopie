@@ -4084,7 +4084,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 211708378}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: ArmeSD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4951,7 +4951,7 @@ GameObject:
   - component: {fileID: 255954115}
   - component: {fileID: 255954117}
   - component: {fileID: 255954116}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Oberarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8267,7 +8267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 431339172}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArmControll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11208,7 +11208,7 @@ GameObject:
   - component: {fileID: 559730804}
   - component: {fileID: 559730806}
   - component: {fileID: 559730805}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14299,7 +14299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 730722770}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: OberArmControll.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17924,7 +17924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 942331464}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17999,7 +17999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 954714506}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18645,7 +18645,7 @@ GameObject:
   - component: {fileID: 983965613}
   - component: {fileID: 983965615}
   - component: {fileID: 983965614}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArm.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18948,7 +18948,7 @@ GameObject:
   - component: {fileID: 999189021}
   - component: {fileID: 999189023}
   - component: {fileID: 999189022}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Muzt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22113,7 +22113,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1195946009}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22188,7 +22188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1196418009}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArmControll.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22367,7 +22367,7 @@ GameObject:
   - component: {fileID: 1203387149}
   - component: {fileID: 1203387151}
   - component: {fileID: 1203387150}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Oberarm.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23472,7 +23472,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1258743683}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: OberArmControll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28415,7 +28415,7 @@ GameObject:
   - component: {fileID: 1549140405}
   - component: {fileID: 1549140404}
   - component: {fileID: 1549140406}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: QuickKill_Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37556,7 +37556,7 @@ GameObject:
   - component: {fileID: 543450652402291299}
   - component: {fileID: 3469287838534311366}
   - component: {fileID: 1711813854741883148}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: smg_SD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37807,7 +37807,7 @@ GameObject:
   - component: {fileID: 9067600406500392342}
   - component: {fileID: 4544781907197780275}
   - component: {fileID: 8177045218585459567}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: GunBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37823,7 +37823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3126324084219059247}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: ArmeSD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38124,7 +38124,7 @@ GameObject:
   - component: {fileID: 839324103773696469}
   - component: {fileID: 6290443197047759761}
   - component: {fileID: 3166589855424250082}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Oberarm.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38221,7 +38221,7 @@ GameObject:
   - component: {fileID: 1012769623988108335}
   - component: {fileID: 4263254825244168346}
   - component: {fileID: 4762803513021656206}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArm.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38239,7 +38239,7 @@ GameObject:
   - component: {fileID: 2368595657278685679}
   - component: {fileID: 8688182707393578350}
   - component: {fileID: 3249728391579447264}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38257,7 +38257,7 @@ GameObject:
   - component: {fileID: 2502839975649505426}
   - component: {fileID: 8860707622597145619}
   - component: {fileID: 3421737635423805085}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38273,7 +38273,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2346998264813147452}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: OberArmControll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38351,7 +38351,7 @@ GameObject:
   - component: {fileID: 4924333076653665779}
   - component: {fileID: 5971622570760107101}
   - component: {fileID: 6780151802043725938}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38367,7 +38367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9128217924918768153}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArmControll.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38487,7 +38487,7 @@ GameObject:
   - component: {fileID: 2672932296862002386}
   - component: {fileID: 5773091530386223117}
   - component: {fileID: 7246859358334604455}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Building
   m_Icon: {fileID: 0}
@@ -38546,7 +38546,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 47
+    m_Bits: 127
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -38734,7 +38734,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 80
+    m_Bits: 128
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -38758,7 +38758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 0
+  m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 1
@@ -38953,29 +38953,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67676f44b475a4be6ad211d927f0d77f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 5650000
-  playerFeet: {fileID: 7485671579535184552}
-  camAnim: {fileID: 7485671579421099437}
   GroundLayer:
     serializedVersion: 2
     m_Bits: 8
+  playerFeet: {fileID: 7485671579535184552}
+  camAnim: {fileID: 7485671579421099437}
+  jumpForce: 5650000
   jumpTime: 1
   gunScript:
   - {fileID: 7485671580722534235}
   - {fileID: 1549140406}
+  Radius: {fileID: 1476074558}
+  mass: 60
   wallChecks:
   - {fileID: 1732428170}
   - {fileID: 1702989478}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
   playerView: {fileID: 7485671579421099435}
   lerpTime: 1
   idlePos: {fileID: 1781429460}
   reversePos: {fileID: 615831583}
   leftLean: {fileID: 420175172}
   rightLean: {fileID: 49257986}
-  Radius: {fileID: 1476074558}
   weaponInUse: 0
   mL: {fileID: 7485671579421099436}
-  mass: 60
   speed: 10
   jumpSpeed: 0
   gravity: 58.86
@@ -39041,7 +39044,7 @@ GameObject:
   - component: {fileID: 7485671580542558174}
   - component: {fileID: 7485671580542558172}
   - component: {fileID: 7485671580542558175}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Muzt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39238,7 +39241,7 @@ GameObject:
   - component: {fileID: 6947026560194571825}
   - component: {fileID: 7485671580722534234}
   - component: {fileID: 7485671580722534235}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: HoleMaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39256,7 +39259,7 @@ GameObject:
   - component: {fileID: 389569958104241251}
   - component: {fileID: 6685068692158851668}
   - component: {fileID: 127844101168384612}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: Oberarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39272,7 +39275,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 213580394840897623}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: OberArmControll.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39288,7 +39291,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 379301516387987240}
-  m_Layer: 4
+  m_Layer: 7
   m_Name: UnterArmControll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
