@@ -7,49 +7,69 @@ public class Movement : MonoBehaviour
 {
     //[SerializeField]float speed= 10f;
     private float baseSpeed;
-    [SerializeField] private float jumpForce = 10f;
+
     private float gravBase;
-    [SerializeField] private Transform playerFeet;
-    [SerializeField] private Animator camAnim;
+
     private bool isWalking = false;
     private float groundDist = 0.2f;
     public LayerMask GroundLayer;
-    [SerializeField] float jumpTime;
+
     private bool canClimp = false;
-    [SerializeField] private Firering[] gunScript;
+
     private bool isSprinting = false;
     private bool isCrouching = false;
     private bool leftWallNearby;
     private bool rightWallNearBy;
-    [SerializeField] private Transform[] wallChecks;
+    private float timePassed;
+    private bool isLeaning;
+    private bool useGravity = true;
+    private bool reverseGravitation = false;
+    private bool roofRun;
+    private float jumpHight = 10f;
+    private float jumpHightRef;
+    private int jumpCounter = 0;
+    private Vector3 moveDirection = Vector3.zero;
+    private CharacterController controller;
+    private bool isJumping;
+    private bool isWallRunning = false;
+    private float timer = 0f;
+    //input vars: 
+    float horizontal;
+    float vertical;
+    [SerializeField]
+    private Transform playerFeet;
+    [SerializeField]
+    private Animator camAnim;
+    [SerializeField]
+    private float jumpForce = 10f;
+    [SerializeField]
+    float jumpTime;
+    [SerializeField]
+    private Firering[] gunScript;
+    [SerializeField]
+    private GameObject Radius;
+    [SerializeField]
+    private float mass = 85f;
+    [SerializeField]
+    private Transform[] wallChecks;
+    [SerializeField]
+    private LayerMask wallLayer;
+
     public GameObject playerView;
     public float lerpTime;
     public Transform idlePos;
     public Transform reversePos;
     public Transform leftLean;
     public Transform rightLean;
-    [SerializeField] private GameObject Radius;
     public bool weaponInUse = false;
-    private float timePassed;
-    private bool isLeaning;
-    private bool useGravity = true;
-    private bool reverseGravitation = false;
     public MouseLoock mL;
-    [SerializeField] private float mass = 85f;
-    private bool roofRun;
-    private float jumpHight = 10f;
-    private float jumpHightRef;
     public float speed = 6f;            // Die Geschwindigkeit, mit der sich der Charakter bewegt
     public float jumpSpeed = 8f;        // Die Geschwindigkeit, mit der der Charakter springt
     public float gravity = 20f;         // Die Gravitation, die auf den Charakter wirkt
-    int jumpCounter = 0;
     public int WeaponIndex;
+    private bool jumpAble;
 
-    private Vector3 moveDirection = Vector3.zero;
-    private CharacterController controller;
-    private bool isJumping;
-
-    void Start()
+    private void Start()
     {
         jumpHightRef = jumpHight;
         Debug.Log("start als update lel");
@@ -59,12 +79,132 @@ public class Movement : MonoBehaviour
         baseSpeed = speed;
     }
 
-    void Update()
+    private void Update()
     {
         // Input abrufen
-        //originalRotation = transform.localRotation;
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        checkForInput();
+        //GroundCheck
+        jumpAble = HandleIsGrounded(); 
+
+        // Sprung abrufen
+        if (HandleIsGrounded())
+        {
+            jumpCounter = 0;
+        }
+        if (Input.GetButtonDown("Jump") && !isJumping && (jumpAble||  jumpCounter == 0))
+        {
+            isJumping = true;
+            jumpCounter++;
+        }
+        else if (Input.GetButton("Jump") && isJumping && jumpCounter != 0 && jumpCounter < 2)
+        {
+            isJumping = true;
+            jumpCounter++;
+        }
+        // Gravitation auf den Charakter anwenden
+
+
+        // Charakter bewegen
+        controller.Move(moveDirection * Time.deltaTime);
+        if (Input.GetKey(KeyCode.Space) && canClimp == true)
+        {
+            moveDirection.y += jumpForce;
+        }
+        //sprint 
+        if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.LeftShift) && isSprinting == false)
+        {
+            startSprinting(); 
+        }
+        //spieler hört auf zu sprinten
+        if (Input.GetKeyUp(KeyCode.LeftShift) | Input.GetButton("Fire1") | Input.GetButton("Fire2"))
+        {
+            stopSprinting(); 
+        }
+
+        //wall run
+        if (isJumping && leftWallRun() && useGravity && jumpCounter != 0)
+        {
+            /*playerView.transform.rotation = leftLean.rotation;
+            playerView.transform.position = leftLean.position;*/
+            isWallRunning = true;
+            Debug.Log("isWallRunning: " + isWallRunning);
+            useGravity = false;
+        }
+
+        if (isJumping && rightWallRun() && useGravity && jumpCounter != 0)
+        {
+            /*playerView.transform.rotation = rightLean.rotation;
+            playerView.transform.position = rightLean.position;*/
+            isWallRunning = true;
+            Debug.Log("isWallRunning: " + isWallRunning);
+            useGravity = false;
+        }
+
+        ////spieler stoppt wall running
+            if (!rightWallRun() &&rightWallNearBy || !leftWallRun() && leftWallNearby)
+            {
+                Debug.Log("beginne zu fallen");
+                jumpHight = jumpHightRef;
+                playerView.transform.rotation = idlePos.rotation;
+                playerView.transform.position = idlePos.position;
+                rightWallNearBy = false;
+                leftWallNearby = false;
+                useGravity = true;
+                isWallRunning = false;
+                Debug.Log("sollte gefallen sein");
+            }
+
+
+        crouching(); 
+
+        leaning(); 
+    }
+
+    private void FixedUpdate()
+    {
+        timer += Time.deltaTime;
+        if (timer > 0.5f)
+        {
+            Debug.Log("ich sollte jetzt eigentlich nicht mehr springen");
+            isJumping = false;
+        }
+        // Charakter bewegen
+        PlayerMove();
+
+        if(isJumping) 
+        {
+            timer = 0f; 
+          PlayerJump();
+        }
+
+        if (useGravity)
+        {
+            if (!reverseGravitation)
+            {
+                moveDirection.y += -gravity * mass * Time.fixedDeltaTime;
+            }
+            else
+            {
+                moveDirection.y += gravity * mass * Time.fixedDeltaTime;
+            }
+        }
+    }
+    //ground check
+    private bool HandleIsGrounded()
+    {
+        if (Physics.CheckSphere(playerFeet.position, groundDist, GroundLayer))
+        {
+            return true;
+        }
+        jumpAble = false; 
+        return false;
+    }
+    //wall run check
+   
+    private void checkForInput()
+    {
+        horizontal = Input.GetAxis("Horizontal");
+        vertical = Input.GetAxis("Vertical");
         if ((horizontal != 0 || vertical != 0) && !isWalking)
         {
             isWalking = true;
@@ -76,101 +216,69 @@ public class Movement : MonoBehaviour
             camAnim.SetBool("isWalking", false);
         }
 
-        // Charakter bewegen
+    }
+    private bool leftWallRun()
+    {
+        RaycastHit wall;
+        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.left), out wall, 1f, wallLayer))
+        {
+            jumpHight = 3f;
+            useGravity = false;
+            leftWallNearby = true;
+            return true;
+        }
+        return false;
+    }
+   
+    private bool rightWallRun()
+    {
+        RaycastHit wall;
+        if (Physics.Raycast(wallChecks[1].transform.position, wallChecks[1].TransformDirection(Vector3.right), out wall, 1f, wallLayer))
+        {
+            jumpHight = 3f;
+            useGravity = false;
+            Debug.Log("is on wall");
+            rightWallNearBy = true;
+            return true;
+        }
+        return false;
+    }
+
+    private void PlayerMove () 
+    {
         moveDirection = new Vector3(horizontal, 0f, vertical);
         moveDirection = transform.TransformDirection(moveDirection);
         moveDirection *= speed;
+    }
 
-        // Sprung abrufen
-        if (HandleIsGrounded())
+    private void PlayerJump() 
+    {
+        moveDirection.y += Mathf.Sqrt(jumpForce * jumpHight * gravity) * Time.fixedDeltaTime;
+    }
+    private void startSprinting() 
+    {
+        isSprinting = true;
+        if (weaponInUse)
         {
-            jumpCounter = 0;
+            gunScript[WeaponIndex].turnlightoff();
+            gunScript[WeaponIndex].shootAble = false;
+            gunScript[WeaponIndex].WeaponAnim.SetBool("isSprinting", true);
         }
-        if (Input.GetButtonDown("Jump") && (HandleIsGrounded()) || (Input.GetButtonDown("Jump") && jumpCounter <= 1))
-        {
-            Debug.Log("jump counter: " + jumpCounter); 
-            isJumping = true;
-            jumpCounter++;
-            moveDirection.y += Mathf.Sqrt(jumpForce * jumpHight * gravity) * Time.fixedDeltaTime;
-            Debug.Log("total jumppower: " + Mathf.Sqrt(jumpForce * jumpHight * gravity) * Time.fixedDeltaTime + "jump force: " + jumpForce + "Jump Hight" + jumpHight + "gravity: " + gravity +
-            "time.deltatime: " + Time.fixedDeltaTime);
-        }
-        // Gravitation auf den Charakter anwenden
-        if (useGravity)
-        {
-            if (!reverseGravitation)
-            {
-                moveDirection.y += -gravity * mass * Time.deltaTime;
-            }
-            else
-            {
-                moveDirection.y += gravity * mass * Time.deltaTime;
-            }
-        }
+        speed *= 2.5f;
+    }
 
-        // Charakter bewegen
-        controller.Move(moveDirection * Time.deltaTime);
-        if (Input.GetKey(KeyCode.Space) && canClimp == true)
+    private void stopSprinting() 
+    {
+        isSprinting = false;
+        if (weaponInUse)
         {
-            moveDirection.y += jumpForce;
+            gunScript[WeaponIndex].shootAble = true;
+            gunScript[WeaponIndex].WeaponAnim.SetBool("isSprinting", false);
         }
-        //sprint 
-        if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.LeftShift) && isSprinting == false)
-        {
-            isSprinting = true;
-            if (weaponInUse)
-            {
-                gunScript[WeaponIndex].turnlightoff();
-                gunScript[WeaponIndex].shootAble = false;
-                gunScript[WeaponIndex].WeaponAnim.SetBool("isSprinting", true);
-            }
-            speed *= 2.5f;
-        }
-        //spieler hört auf zu sprinten
-        if (Input.GetKeyUp(KeyCode.LeftShift) | Input.GetButton("Fire1") | Input.GetButton("Fire2"))
-        {
-
-            isSprinting = false;
-            if (weaponInUse)
-            {
-                gunScript[WeaponIndex].shootAble = true;
-                gunScript[WeaponIndex].WeaponAnim.SetBool("isSprinting", false);
-            }
-            speed = baseSpeed;
-        }
-        //guck mal nach, dass der Spieler in der nähe einer Wand ist
-        if (!useGravity)
-        {
-            rightWallRun(ref rightWallNearBy);
-            leftWallRun(ref leftWallNearby);
-        }
-
-        //wall run
-        if (isJumping && leftWallRun(ref leftWallNearby) && useGravity && jumpCounter < 2)
-        {
-            useGravity = false;
-            playerView.transform.rotation = leftLean.rotation;
-            playerView.transform.position = leftLean.position;
-        }
-
-        if (isJumping && rightWallRun(ref rightWallNearBy) && useGravity && jumpCounter < 2)
-        {
-            useGravity = false;
-            playerView.transform.rotation = rightLean.rotation;
-            playerView.transform.position = rightLean.position;
-        }
-
-        //spieler stoppt wall running
-        if (!rightWallRun(ref rightWallNearBy) | !leftWallRun(ref leftWallNearby))
-        {
-            jumpHight = jumpHightRef;
-            playerView.transform.rotation = idlePos.rotation;
-            playerView.transform.position = idlePos.position;
-            rightWallNearBy = false;
-            leftWallNearby = false;
-            useGravity = true;
-        }
-
+        speed = baseSpeed;
+    }
+    private void crouching() 
+    {
         //spieler soll sich ducken 
         if (Input.GetKey(KeyCode.C))
         {
@@ -192,7 +300,9 @@ public class Movement : MonoBehaviour
                 gunScript[WeaponIndex].WeaponAnim.SetBool("isWalking", false);
             }
         }
-
+    }
+    private void leaning() 
+    {
         //lehnen 
         if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E))
         {
@@ -230,68 +340,6 @@ public class Movement : MonoBehaviour
                 playerView.transform.position = rightLean.position;
             }
         }
-        //stopp lehnen 
-        if (Input.GetKeyUp(KeyCode.E) | Input.GetKeyUp(KeyCode.Q))
-        {
-            if (timePassed < lerpTime && isLeaning)
-            {
-                timePassed = 0;
-                playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, idlePos.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, idlePos.rotation, timePassed / lerpTime));
-                timePassed += Time.deltaTime;
-            }
-            if (timePassed >= lerpTime)
-            {
-                isLeaning = false;
-                playerView.transform.rotation = idlePos.rotation;
-            }
-        }
-    }
-    //ground check
-    private bool HandleIsGrounded()
-    {
-        if (Physics.CheckSphere(playerFeet.position, groundDist, GroundLayer))
-        { 
-            if (!reverseGravitation && jumpCounter == 2 && roofRun)
-            {
-                reverseGravitation = true;
-                transform.Rotate(-180, transform.rotation.y - 180, 0);
-            }
-            Debug.Log(jumpCounter);
-            return true;
-        }
-        return false;
-    }
-    //wall run check
-    private bool leftWallRun(ref bool wallNearBy)
-    {
-        RaycastHit wall;
-        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.right), out wall, 1f))
-        {
-            if (wall.transform.CompareTag("Building"))
-            {
-                jumpHight = 3f;
-                useGravity = false;
-                wallNearBy = true;
-                return wallNearBy;
-            }
-        }
-        return false;
-    }
-    private bool rightWallRun(ref bool wallNearBy)
-    {
-        RaycastHit wall;
-        if (Physics.Raycast(wallChecks[1].transform.position, wallChecks[1].TransformDirection(Vector3.left), out wall, 1f))
-        {
-            if (wall.transform.CompareTag("Building"))
-            {
-                jumpHight = 3f;
-                useGravity = false;
-                Debug.Log("is on wall");
-                wallNearBy = true;
-                return wallNearBy;
-            }
-        }
-        return false;
     }
     private void OnTriggerEnter(Collider other)
     {
