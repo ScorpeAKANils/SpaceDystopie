@@ -11,31 +11,30 @@ public class Movement : MonoBehaviour
     private float gravBase;
 
     private bool isWalking = false;
-    private float groundDist = 0.2f;
+    private float groundDist = 0.1f;
     public LayerMask GroundLayer;
 
     private bool canClimp = false;
-
+    private float timer = 0;
     private bool isSprinting = false;
     private bool isCrouching = false;
-    private bool leftWallNearby;
-    private bool rightWallNearBy;
+    private bool wallRunAble; 
     private float timePassed;
     private bool isLeaning;
     private bool useGravity = true;
     private bool reverseGravitation = false;
     private bool roofRun;
-    private float jumpHight = 10f;
+
     private float jumpHightRef;
     private int jumpCounter = 0;
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
     private bool isJumping;
     private bool isWallRunning = false;
-    private float timer = 0f;
     //input vars: 
-    float horizontal;
-    float vertical;
+    private float horizontal;
+    private float vertical;
+    private bool doubleJumpAble;
     [SerializeField]
     private Transform playerFeet;
     [SerializeField]
@@ -50,10 +49,15 @@ public class Movement : MonoBehaviour
     private GameObject Radius;
     [SerializeField]
     private float mass = 85f;
-    [SerializeField]
+    [SerializeField, Tooltip("Emptys, wich are used for the wall the wall Check. Index 0 = left wall, index 1 = right wall")]
     private Transform[] wallChecks;
     [SerializeField]
     private LayerMask wallLayer;
+    [SerializeField]
+    private float jumpHight = 10f;
+    [Tooltip("Object that got hit by the Raycast and is a wall")]
+    private RaycastHit wall;
+    private float _directionY; 
 
     public GameObject playerView;
     public float lerpTime;
@@ -79,30 +83,51 @@ public class Movement : MonoBehaviour
         baseSpeed = speed;
     }
 
+
     private void Update()
     {
+        Debug.Log("JumpCounter = " + jumpCounter); 
         // Input abrufen
         checkForInput();
         //GroundCheck
-        jumpAble = HandleIsGrounded(); 
+        wallRunAble = WallCheck();
+        jumpAble = HandleIsGrounded();
 
         // Sprung abrufen
         if (HandleIsGrounded())
         {
             jumpCounter = 0;
         }
-        if (Input.GetButtonDown("Jump") && !isJumping && (jumpAble||  jumpCounter == 0))
+        if (Input.GetButtonDown("Jump") && jumpAble)
         {
-            isJumping = true;
-            jumpCounter++;
-        }
-        else if (Input.GetButton("Jump") && isJumping && jumpCounter != 0 && jumpCounter < 2)
+            PlayerJump();
+           
+        } else if (Input.GetButtonDown("Jump") && doubleJumpAble)
         {
-            isJumping = true;
-            jumpCounter++;
+            PlayerJump();
+            doubleJumpAble = false;
         }
-        // Gravitation auf den Charakter anwenden
 
+        // Gravitation auf den Charakter anwenden
+        if (!jumpAble && wallRunAble)
+        {
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                wallRunAble = false;
+                PlayerJump();
+                doubleJumpAble = false;
+            }
+            else
+            {
+                useGravity = false;
+                _directionY = 0;
+            }
+
+        } else if (!wallRunAble)
+        {
+            useGravity = true; 
+        }
 
         // Charakter bewegen
         controller.Move(moveDirection * Time.deltaTime);
@@ -121,39 +146,6 @@ public class Movement : MonoBehaviour
             stopSprinting(); 
         }
 
-        //wall run
-        if (isJumping && leftWallRun() && useGravity && jumpCounter != 0)
-        {
-            /*playerView.transform.rotation = leftLean.rotation;
-            playerView.transform.position = leftLean.position;*/
-            isWallRunning = true;
-            Debug.Log("isWallRunning: " + isWallRunning);
-            useGravity = false;
-        }
-
-        if (isJumping && rightWallRun() && useGravity && jumpCounter != 0)
-        {
-            /*playerView.transform.rotation = rightLean.rotation;
-            playerView.transform.position = rightLean.position;*/
-            isWallRunning = true;
-            Debug.Log("isWallRunning: " + isWallRunning);
-            useGravity = false;
-        }
-
-        ////spieler stoppt wall running
-            if (!rightWallRun() &&rightWallNearBy || !leftWallRun() && leftWallNearby)
-            {
-                Debug.Log("beginne zu fallen");
-                jumpHight = jumpHightRef;
-                playerView.transform.rotation = idlePos.rotation;
-                playerView.transform.position = idlePos.position;
-                rightWallNearBy = false;
-                leftWallNearby = false;
-                useGravity = true;
-                isWallRunning = false;
-                Debug.Log("sollte gefallen sein");
-            }
-
 
         crouching(); 
 
@@ -161,39 +153,29 @@ public class Movement : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
-        timer += Time.deltaTime;
-        if (timer > 0.5f)
-        {
-            Debug.Log("ich sollte jetzt eigentlich nicht mehr springen");
-            isJumping = false;
-        }
+    { 
         // Charakter bewegen
         PlayerMove();
-
-        if(isJumping) 
-        {
-            timer = 0f; 
-          PlayerJump();
-        }
-
         if (useGravity)
         {
             if (!reverseGravitation)
             {
-                moveDirection.y += -gravity * mass * Time.fixedDeltaTime;
+                _directionY -= gravity * Time.fixedDeltaTime;
             }
             else
             {
-                moveDirection.y += gravity * mass * Time.fixedDeltaTime;
+                _directionY += gravity * Time.fixedDeltaTime;
             }
         }
+        moveDirection.y = _directionY;
+        controller.Move(moveDirection*Time.fixedDeltaTime); 
     }
     //ground check
     private bool HandleIsGrounded()
     {
         if (Physics.CheckSphere(playerFeet.position, groundDist, GroundLayer))
         {
+            doubleJumpAble = true; 
             return true;
         }
         jumpAble = false; 
@@ -217,43 +199,28 @@ public class Movement : MonoBehaviour
         }
 
     }
-    private bool leftWallRun()
-    {
-        RaycastHit wall;
-        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.left), out wall, 1f, wallLayer))
-        {
-            jumpHight = 3f;
-            useGravity = false;
-            leftWallNearby = true;
-            return true;
-        }
-        return false;
-    }
-   
-    private bool rightWallRun()
-    {
-        RaycastHit wall;
-        if (Physics.Raycast(wallChecks[1].transform.position, wallChecks[1].TransformDirection(Vector3.right), out wall, 1f, wallLayer))
-        {
-            jumpHight = 3f;
-            useGravity = false;
-            Debug.Log("is on wall");
-            rightWallNearBy = true;
-            return true;
-        }
-        return false;
-    }
+
 
     private void PlayerMove () 
     {
         moveDirection = new Vector3(horizontal, 0f, vertical);
-        moveDirection = transform.TransformDirection(moveDirection);
-        moveDirection *= speed;
+        moveDirection = transform.TransformDirection(moveDirection * speed); 
     }
 
     private void PlayerJump() 
     {
-        moveDirection.y += Mathf.Sqrt(jumpForce * jumpHight * gravity) * Time.fixedDeltaTime;
+        _directionY = jumpForce;
+    }
+
+    private bool WallCheck()
+    {
+
+        if (Physics.CheckSphere(wallChecks[0].position, 2f, wallLayer))
+        {
+            return true; 
+        }
+
+        return false; 
     }
     private void startSprinting() 
     {
@@ -266,7 +233,6 @@ public class Movement : MonoBehaviour
         }
         speed *= 2.5f;
     }
-
     private void stopSprinting() 
     {
         isSprinting = false;
@@ -374,3 +340,81 @@ public class Movement : MonoBehaviour
         }
     }
 }
+
+/* Unused code, which is obsolote, but maybe, I need him ever again
+ 
+ 
+ 
+ **old wall checks**
+     private bool leftWallRun()
+    {
+  
+        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.forward), out wall, 2f, wallLayer))
+        {
+            jumpHight = 3f;
+            useGravity = false;
+            leftWallNearby = true;
+            return true;
+        }
+        return false;
+    }
+   
+    private bool rightWallRun()
+    {
+
+        if (Physics.Raycast(wallChecks[1].transform.position, wallChecks[1].TransformDirection(Vector3.forward), out wall, 2f, wallLayer))
+        {
+            jumpHight = 3f;
+            useGravity = false;
+            rightWallNearBy = true;
+            return true;
+        }
+        return false;
+    }
+ 
+ 
+        //wall run
+        if (isJumping && leftWallRun() && useGravity && jumpCounter != 0)
+        {
+            /*playerView.transform.rotation = leftLean.rotation;
+            playerView.transform.position = leftLean.position;
+            isWallRunning = true;
+            this.transform.position = Vector3.left * 1 * Time.deltaTime; 
+            Debug.Log("isWallRunning: " + isWallRunning);
+            useGravity = false;
+            wallChecks[0].LookAt(wall.transform.position); 
+        }
+
+        if (isJumping && rightWallRun() && useGravity && jumpCounter != 0)
+        {
+            /*playerView.transform.rotation = rightLean.rotation;
+            playerView.transform.position = rightLean.position;
+            isWallRunning = true;
+            this.transform.position = Vector3.left * 1 * Time.deltaTime;
+            Debug.Log("isWallRunning: " + isWallRunning);
+            useGravity = false;
+            wallChecks[0].LookAt(wall.transform.position);
+        }
+
+        ////spieler stoppt wall running
+            if (!rightWallRun() &&rightWallNearBy || !leftWallRun() && leftWallNearby)
+            {
+                Debug.Log("beginne zu fallen");
+                jumpHight = jumpHightRef;
+                playerView.transform.rotation = idlePos.rotation;
+                playerView.transform.position = idlePos.position;
+                rightWallNearBy = false;
+                leftWallNearby = false;
+                useGravity = true;
+                isWallRunning = false;
+                Debug.Log("sollte gefallen sein");
+            foreach (Transform wallCheck in wallChecks)
+            {
+                wallCheck.transform.rotation = Quaternion.Euler(new Vector3(0,0,0)); 
+            }
+            }
+ 
+ 
+ 
+ 
+ */
