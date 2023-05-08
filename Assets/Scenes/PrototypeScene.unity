@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 203844588}
-  m_IndirectSpecularColor: {r: 0.32707268, g: 0.2816511, b: 0.41668126, a: 1}
+  m_IndirectSpecularColor: {r: 0.08736642, g: 0.064480186, b: 0.1448608, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -30989,7 +30989,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1697953343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38958,7 +38958,7 @@ MonoBehaviour:
     m_Bits: 8
   playerFeet: {fileID: 7485671579535184552}
   camAnim: {fileID: 7485671579421099437}
-  jumpForce: 5650000
+  jumpForce: 15
   jumpTime: 1
   gunScript:
   - {fileID: 7485671580722534235}
@@ -38971,6 +38971,7 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
+  jumpHight: 10
   playerView: {fileID: 7485671579421099435}
   lerpTime: 1
   idlePos: {fileID: 1781429460}
@@ -38979,9 +38980,9 @@ MonoBehaviour:
   rightLean: {fileID: 49257986}
   weaponInUse: 0
   mL: {fileID: 7485671579421099436}
-  speed: 10
+  speed: 14
   jumpSpeed: 0
-  gravity: 58.86
+  gravity: 29.43
   WeaponIndex: 0
 --- !u!114 &7485671579973283096
 MonoBehaviour:

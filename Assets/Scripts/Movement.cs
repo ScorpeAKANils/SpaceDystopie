@@ -17,28 +17,23 @@ public class Movement : MonoBehaviour
     private bool canClimp = false;
     private float timer = 0;
     private bool isSprinting = false;
-    private bool isCrouching = false;
-    private bool wallRunAble; 
+    private bool wallRunAble;
     private float timePassed;
     private bool isLeaning;
     private bool useGravity = true;
     private bool reverseGravitation = false;
-    private bool roofRun;
 
-    private float jumpHightRef;
     private int jumpCounter = 0;
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
     private bool isJumping;
-    private bool isWallRunning = false;
+    private float jumpRef;
     //input vars: 
     private float horizontal;
     private float vertical;
     private bool doubleJumpAble;
     [SerializeField]
     private Transform playerFeet;
-    [SerializeField]
-    private Animator camAnim;
     [SerializeField]
     private float jumpForce = 10f;
     [SerializeField]
@@ -57,8 +52,13 @@ public class Movement : MonoBehaviour
     private float jumpHight = 10f;
     [Tooltip("Object that got hit by the Raycast and is a wall")]
     private RaycastHit wall;
-    private float _directionY; 
-
+    private float _directionY;
+    private bool jumpAble;
+    private bool SetJumpPower = true;
+    private bool roofRun;
+    private bool isRoofRunning;
+    private bool canRoofRun;
+    private GameObject Wall;
     public GameObject playerView;
     public float lerpTime;
     public Transform idlePos;
@@ -71,11 +71,12 @@ public class Movement : MonoBehaviour
     public float jumpSpeed = 8f;        // Die Geschwindigkeit, mit der der Charakter springt
     public float gravity = 20f;         // Die Gravitation, die auf den Charakter wirkt
     public int WeaponIndex;
-    private bool jumpAble;
+
 
     private void Start()
     {
-        jumpHightRef = jumpHight;
+        jumpRef = jumpForce;
+        Debug.Log(jumpRef);
         Debug.Log("start als update lel");
         Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
@@ -86,7 +87,6 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("JumpCounter = " + jumpCounter); 
         // Input abrufen
         checkForInput();
         //GroundCheck
@@ -100,33 +100,48 @@ public class Movement : MonoBehaviour
         }
         if (Input.GetButtonDown("Jump") && jumpAble)
         {
+            if (roofRun)
+            {
+                canRoofRun = true;
+            }
             PlayerJump();
-           
-        } else if (Input.GetButtonDown("Jump") && doubleJumpAble)
+        }
+
+        if (Input.GetButtonDown("Jump") && doubleJumpAble)
         {
-            PlayerJump();
-            doubleJumpAble = false;
+            if (!roofRun)
+            {
+                PlayerJump();
+                doubleJumpAble = false;
+            } else if (canRoofRun && !isRoofRunning)
+            {
+                reverseGravitation = true;
+                TurnPlayerAround();
+                isRoofRunning = true;
+            }
         }
 
         // Gravitation auf den Charakter anwenden
-        if (!jumpAble && wallRunAble)
+        if (!jumpAble && wallRunAble && !isJumping)
         {
-
             if (Input.GetButtonDown("Jump"))
             {
-                wallRunAble = false;
+                jumpForce = jumpRef;
+                useGravity = true;
+                doubleJumpAble = true;
                 PlayerJump();
-                doubleJumpAble = false;
             }
-            else
-            {
-                useGravity = false;
-                _directionY = 0;
-            }
+            useGravity = false;
+            _directionY = jumpForce;
 
-        } else if (!wallRunAble)
+
+        }
+
+        else if (!wallRunAble)
         {
-            useGravity = true; 
+            useGravity = true;
+            jumpForce = jumpRef;
+            SetJumpPower = true;
         }
 
         // Charakter bewegen
@@ -138,22 +153,31 @@ public class Movement : MonoBehaviour
         //sprint 
         if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.LeftShift) && isSprinting == false)
         {
-            startSprinting(); 
+            startSprinting();
         }
         //spieler hört auf zu sprinten
         if (Input.GetKeyUp(KeyCode.LeftShift) | Input.GetButton("Fire1") | Input.GetButton("Fire2"))
         {
-            stopSprinting(); 
+            stopSprinting();
         }
 
 
-        crouching(); 
 
-        leaning(); 
+        crouching();
+        if (Input.GetKey(KeyCode.Q))
+        {
+            leanLeft();
+        }else if (Input.GetKey(KeyCode.E))
+        {
+            leanRight();
+        } else if(Input.GetKeyUp(KeyCode.E)|| Input.GetKeyUp(KeyCode.Q)) 
+        {
+            stopLeaning(); 
+        }
     }
 
     private void FixedUpdate()
-    { 
+    {
         // Charakter bewegen
         PlayerMove();
         if (useGravity)
@@ -168,48 +192,47 @@ public class Movement : MonoBehaviour
             }
         }
         moveDirection.y = _directionY;
-        controller.Move(moveDirection*Time.fixedDeltaTime); 
+        controller.Move(moveDirection * Time.fixedDeltaTime);
     }
     //ground check
     private bool HandleIsGrounded()
     {
+
         if (Physics.CheckSphere(playerFeet.position, groundDist, GroundLayer))
         {
-            doubleJumpAble = true; 
+            doubleJumpAble = true;
+            isJumping = false;
             return true;
         }
-        jumpAble = false; 
+        jumpAble = false;
         return false;
     }
     //wall run check
-   
+
     private void checkForInput()
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-        if ((horizontal != 0 || vertical != 0) && !isWalking)
-        {
-            isWalking = true;
-            camAnim.SetBool("isWalking", true);
-        }
-        else if ((vertical == 0 && horizontal == 0) && isWalking)
-        {
-            isWalking = false;
-            camAnim.SetBool("isWalking", false);
-        }
-
     }
 
 
-    private void PlayerMove () 
+    private void PlayerMove()
     {
         moveDirection = new Vector3(horizontal, 0f, vertical);
-        moveDirection = transform.TransformDirection(moveDirection * speed); 
+        moveDirection = transform.TransformDirection(moveDirection * speed);
     }
 
-    private void PlayerJump() 
+    private void PlayerJump()
     {
         _directionY = jumpForce;
+        if (jumpCounter == 0)
+        {
+            jumpCounter = 1;
+        }
+        else
+        {
+            jumpCounter = 2;
+        }
     }
 
     private bool WallCheck()
@@ -217,12 +240,17 @@ public class Movement : MonoBehaviour
 
         if (Physics.CheckSphere(wallChecks[0].position, 2f, wallLayer))
         {
-            return true; 
+            if (SetJumpPower)
+            {
+                jumpForce = 0;
+                SetJumpPower = false;
+            }
+            return true;
         }
 
-        return false; 
+        return false;
     }
-    private void startSprinting() 
+    private void startSprinting()
     {
         isSprinting = true;
         if (weaponInUse)
@@ -233,7 +261,7 @@ public class Movement : MonoBehaviour
         }
         speed *= 2.5f;
     }
-    private void stopSprinting() 
+    private void stopSprinting()
     {
         isSprinting = false;
         if (weaponInUse)
@@ -243,7 +271,12 @@ public class Movement : MonoBehaviour
         }
         speed = baseSpeed;
     }
-    private void crouching() 
+
+    private void TurnPlayerAround()
+    {
+        this.transform.Rotate(0, 0, 180, Space.Self);
+    }
+    private void crouching()
     {
         //spieler soll sich ducken 
         if (Input.GetKey(KeyCode.C))
@@ -267,55 +300,50 @@ public class Movement : MonoBehaviour
             }
         }
     }
-    private void leaning() 
+
+    private void leanRight()
     {
-        //lehnen 
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E))
+        if (timePassed < lerpTime && !isLeaning)
         {
-            timePassed = 0;
+            playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, rightLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, rightLean.rotation, timePassed / 1));
+            timePassed += Time.deltaTime;
+        }
+        if (timePassed >= lerpTime)
+        {
+            isLeaning = true;
+            playerView.transform.rotation = rightLean.rotation;
+            playerView.transform.position = rightLean.position;
         }
 
-        if (Input.GetKey(KeyCode.Q))
+    }
+    private void leanLeft()
+    {
+
+        if (timePassed < lerpTime && !isLeaning)
         {
-            if (timePassed < lerpTime && !isLeaning)
-            {
-                playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, leftLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, leftLean.rotation, timePassed / lerpTime));
-                timePassed += Time.deltaTime;
-            }
-
-            if (timePassed >= lerpTime)
-            {
-                isLeaning = true;
-                playerView.transform.rotation = leftLean.rotation;
-                playerView.transform.position = leftLean.position;
-            }
-
+            playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, leftLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, leftLean.rotation, timePassed / lerpTime));
+            timePassed += Time.deltaTime;
         }
-        else if (Input.GetKey(KeyCode.E))
+
+        if (timePassed >= lerpTime)
         {
-
-            if (timePassed < lerpTime && !isLeaning)
-            {
-                playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, rightLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, rightLean.rotation, timePassed / 1));
-                timePassed += Time.deltaTime;
-            }
-            if (timePassed >= lerpTime)
-            {
-                isLeaning = true;
-                playerView.transform.rotation = rightLean.rotation;
-                playerView.transform.position = rightLean.position;
-            }
+            isLeaning = true;
+            playerView.transform.rotation = leftLean.rotation;
+            playerView.transform.position = leftLean.position;
         }
+    }
+
+    private void stopLeaning()
+    {
+        timePassed = 0;
+        isLeaning = false;
+        playerView.transform.rotation = idlePos.rotation;
+        playerView.transform.position = idlePos.position;
     }
     private void OnTriggerEnter(Collider other)
     {
         //ausserhalb des gebäudes = stopp reverse gravitation
-        if (other.CompareTag("outofBuilding") && reverseGravitation)
-        {
-            roofRun = false;
-            reverseGravitation = false;
-            transform.Rotate(-180, transform.rotation.y + 180, 0);
-        }
+
         //im gebäude erlaube reverse gravitation
         if (other.CompareTag("Building"))
         {
@@ -335,8 +363,17 @@ public class Movement : MonoBehaviour
         {
 
             //gravity = gravBase;
+            canRoofRun = false; 
             useGravity = true;
             canClimp = false;
+        }
+
+        if (other.CompareTag("Building"))
+        {
+            isRoofRunning = false; 
+            roofRun = false;
+            reverseGravitation = false;
+            TurnPlayerAround(); 
         }
     }
 }
