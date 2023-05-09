@@ -7,13 +7,8 @@ public class healthEnemy : MonoBehaviour
     [SerializeField] float health = 10f;
     [SerializeField] GameObject gegner;
     public SPAWNER spawnerScript;
-    public bool attack;
     [SerializeField] bool isSpawned;
 
-    private void Update()
-    {
-        Debug.Log(attack); 
-    }
     public void GetHeadShot()
     {
         spawnerScript.ZombeysAlive--;
