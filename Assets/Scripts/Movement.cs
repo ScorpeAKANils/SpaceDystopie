@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     private float gravBase;
 
     private bool isWalking = false;
-    private float groundDist = 0.1f;
+    private float groundDist = 0.3f;
     public LayerMask GroundLayer;
 
     private bool canClimp = false;
@@ -105,6 +105,7 @@ public class Movement : MonoBehaviour
                 canRoofRun = true;
             }
             PlayerJump();
+        
         }
 
         if (Input.GetButtonDown("Jump") && doubleJumpAble)
@@ -259,7 +260,7 @@ public class Movement : MonoBehaviour
             gunScript[WeaponIndex].shootAble = false;
             gunScript[WeaponIndex].WeaponAnim.SetBool("isSprinting", true);
         }
-        speed *= 2.5f;
+        speed *= 1.5f; 
     }
     private void stopSprinting()
     {
