@@ -22,6 +22,14 @@ public class LookAtPlayer : MonoBehaviour
     bool isCheckForPlayerAllowed = true; 
     private int usedGun = 0;
 
+    //class references
+    private PlayerHealth _playerHealth;
+
+    private void Start()
+    {
+        _playerHealth = myPlayer.GetComponent<PlayerHealth>(); 
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -64,7 +72,7 @@ public class LookAtPlayer : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Player"))
                 {
-                    myPlayer.gameObject.GetComponent<PlayerHealth>().GetDamage(damage);
+                    _playerHealth.GetDamage(damage);
                     StopCoroutine(shootingYield()); 
                 }
             

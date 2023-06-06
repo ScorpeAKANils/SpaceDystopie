@@ -13,17 +13,9 @@ public class PlayerHealth : MonoBehaviour
     {
         HealthCounter.text = "Health: " + Health.ToString(); 
     }
-
-    // Start is called before the first frame update
-   /* private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("GegnerBody"))
-        {
-            GetDamage(10f); 
-        }
-    }*/
     public void GetDamage(float damage)
     {
+        Debug.Log("habe damage erhalten!"); 
         Health -= damage;
         HealthCounter.text = "Health: " + Health.ToString();
         if (Health <= 0)

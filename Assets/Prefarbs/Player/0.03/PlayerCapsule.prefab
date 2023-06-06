@@ -2580,7 +2580,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   playerFeet: {fileID: 5535881748052146740}
-  jumpForce: 15
+  jumpForce: 10
   jumpTime: 1
   gunScript:
   - {fileID: 5535881748978466759}
@@ -2593,7 +2593,7 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
-  jumpHight: 300
+  jumpHight: 150
   playerView: {fileID: 5535881748081552695}
   lerpTime: 1
   idlePos: {fileID: 3112292710232857672}
@@ -2602,7 +2602,7 @@ MonoBehaviour:
   rightLean: {fileID: 3112292708760581790}
   weaponInUse: 0
   mL: {fileID: 5535881748081552688}
-  speed: 14
+  speed: 1
   jumpSpeed: 0
   gravity: 29.43
   WeaponIndex: 0

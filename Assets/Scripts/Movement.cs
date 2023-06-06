@@ -309,12 +309,6 @@ public class Movement : MonoBehaviour
             playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, rightLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, rightLean.rotation, timePassed / 1));
             timePassed += Time.deltaTime;
         }
-        if (timePassed >= lerpTime)
-        {
-            isLeaning = true;
-            playerView.transform.rotation = rightLean.rotation;
-            playerView.transform.position = rightLean.position;
-        }
 
     }
     private void leanLeft()
@@ -324,13 +318,6 @@ public class Movement : MonoBehaviour
         {
             playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, leftLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, leftLean.rotation, timePassed / lerpTime));
             timePassed += Time.deltaTime;
-        }
-
-        if (timePassed >= lerpTime)
-        {
-            isLeaning = true;
-            playerView.transform.rotation = leftLean.rotation;
-            playerView.transform.position = leftLean.position;
         }
     }
 
