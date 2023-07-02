@@ -170,13 +170,21 @@ public class Movement : MonoBehaviour
         crouching();
         if (Input.GetKey(KeyCode.Q))
         {
+            Debug.Log("q"); 
             leanLeft();
-        }else if (Input.GetKey(KeyCode.E))
+        }
+        else if (Input.GetKeyUp(KeyCode.Q))
+        {
+            stopLeaning();
+        }
+
+        if (Input.GetKey(KeyCode.E))
         {
             leanRight();
-        } else if(Input.GetKeyUp(KeyCode.E)|| Input.GetKeyUp(KeyCode.Q)) 
+        }
+        else if(Input.GetKeyUp(KeyCode.E))
         {
-            stopLeaning(); 
+            stopLeaning();
         }
     }
 
@@ -307,26 +315,27 @@ public class Movement : MonoBehaviour
 
     private void leanRight()
     {
-        if (timePassed < lerpTime && !isLeaning)
-        {
-            playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, rightLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, rightLean.rotation, timePassed / 1));
-            timePassed += Time.deltaTime;
-        }
+
+           //
+           //playerView.transform.SetPositionAndRotation(Vector3.Lerp(playerView.transform.position, rightLean.position, lerpTime),
+           //Quaternion.Lerp(playerView.transform.rotation,rightLean.rotation, lerpTime));
+        playerView.transform.position = Vector3.Lerp(playerView.transform.position, rightLean.position, lerpTime);
+        playerView.transform.rotation = Quaternion.Lerp(playerView.transform.rotation,rightLean.rotation, lerpTime); 
+
 
     }
     private void leanLeft()
     {
 
-        if (timePassed < lerpTime && !isLeaning)
-        {
-            playerView.transform.SetPositionAndRotation(Vector3.Slerp(playerView.transform.position, leftLean.position, timePassed / lerpTime), Quaternion.Slerp(playerView.transform.rotation, leftLean.rotation, timePassed / lerpTime));
-            timePassed += Time.deltaTime;
-        }
+
+        /* playerView.transform.SetPositionAndRotation(Vector3.Lerp(playerView.transform.position, leftLean.position, -lerpTime), Quaternion.Lerp(playerView.transform.rotation, leftLean.rotation, -lerpTime));*/
+        playerView.transform.position = Vector3.Lerp(playerView.transform.position, leftLean.position, lerpTime);
+        playerView.transform.rotation = Quaternion.Lerp(playerView.transform.rotation,leftLean.rotation, lerpTime);
+
     }
 
     private void stopLeaning()
     {
-        timePassed = 0;
         isLeaning = false;
         playerView.transform.rotation = idlePos.rotation;
         playerView.transform.position = idlePos.position;

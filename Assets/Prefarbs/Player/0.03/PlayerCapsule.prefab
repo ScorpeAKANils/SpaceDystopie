@@ -304,12 +304,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3112292708334613983}
   m_LocalRotation: {x: -0, y: -0, z: 0.17364816, w: 0.9848078}
-  m_LocalPosition: {x: -0.458, y: 0.6599998, z: 0}
+  m_LocalPosition: {x: -0.45800018, y: 0.65999985, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5535881748632733076}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 20}
 --- !u!1 &3112292708344684095
 GameObject:
@@ -616,12 +616,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3112292708760581789}
   m_LocalRotation: {x: -0, y: -0, z: -0.17364825, w: 0.9848078}
-  m_LocalPosition: {x: 0.458, y: 0.65999985, z: 0}
+  m_LocalPosition: {x: 0.45800018, y: 0.65999985, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5535881748632733076}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -20}
 --- !u!1 &3112292708826121309
 GameObject:
@@ -1888,7 +1888,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5535881748632733076}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3112292710289532473
 GameObject:
@@ -2269,7 +2269,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5535881748632733076}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5535881748081552695
 GameObject:
@@ -2309,7 +2309,7 @@ Transform:
   - {fileID: 5535881748414174763}
   - {fileID: 5535881748696683939}
   m_Father: {fileID: 5535881748632733076}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5535881748081552693
 Camera:
@@ -2500,11 +2500,11 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5535881748081552690}
+  - {fileID: 5535881748052146740}
   - {fileID: 3112292708334613976}
   - {fileID: 3112292708760581790}
   - {fileID: 3112292710232857672}
-  - {fileID: 5535881748081552690}
-  - {fileID: 5535881748052146740}
   - {fileID: 3112292709514278051}
   - {fileID: 3112292709200375939}
   - {fileID: 3112292710310684950}
@@ -2576,9 +2576,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67676f44b475a4be6ad211d927f0d77f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 72
   playerFeet: {fileID: 5535881748052146740}
   jumpForce: 10
   jumpTime: 1
@@ -2594,6 +2591,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpHight: 150
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 72
   playerView: {fileID: 5535881748081552695}
   lerpTime: 1
   idlePos: {fileID: 3112292710232857672}
