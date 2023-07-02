@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
 
     private bool isWalking = false;
     private float groundDist = 0.3f;
-    public LayerMask GroundLayer;
+  
 
     private bool canClimp = false;
     private float timer = 0;
@@ -22,7 +22,6 @@ public class Movement : MonoBehaviour
     private bool isLeaning;
     private bool useGravity = true;
     private bool reverseGravitation = false;
-
     private int jumpCounter = 0;
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
@@ -32,6 +31,14 @@ public class Movement : MonoBehaviour
     private float horizontal;
     private float vertical;
     private bool doubleJumpAble;
+    private float _directionY;
+    private bool jumpAble;
+    private bool SetJumpPower = true;
+    private bool roofRun;
+    private bool isRoofRunning;
+    private bool canRoofRun;
+    private GameObject Wall;
+
     [SerializeField]
     private Transform playerFeet;
     [SerializeField]
@@ -52,13 +59,9 @@ public class Movement : MonoBehaviour
     private float jumpHight = 10f;
     [Tooltip("Object that got hit by the Raycast and is a wall")]
     private RaycastHit wall;
-    private float _directionY;
-    private bool jumpAble;
-    private bool SetJumpPower = true;
-    private bool roofRun;
-    private bool isRoofRunning;
-    private bool canRoofRun;
-    private GameObject Wall;
+
+
+    public LayerMask GroundLayer;
     public GameObject playerView;
     public float lerpTime;
     public Transform idlePos;

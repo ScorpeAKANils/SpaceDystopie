@@ -38,17 +38,17 @@ public class LookAtPlayer : MonoBehaviour
         if (Vector3.Distance(this.transform.position, myPlayer.position) < attackDistance)
         {
             RaycastHit hit;
-            if (isCheckForPlayerAllowed)
+            if (isCheckForPlayerAllowed==false)
             {
-                if (Physics.Raycast(Sensor.position, Sensor.TransformDirection(Vector3.forward), out hit, attackDistance))
+                return; 
+            }
+            if (Physics.Raycast(Sensor.position, Sensor.TransformDirection(Vector3.forward), out hit, attackDistance))
                 {
-                    
                     if (hit.transform.CompareTag("Player"))
                     {
-                       
+                        isCheckForPlayerAllowed = false;
+                        playerInSight = true;
 
-                            isCheckForPlayerAllowed = false;
-                            playerInSight = true;
                         if (playerInSight)
                         {
                             StartCoroutine(shootingYield());
@@ -60,7 +60,7 @@ public class LookAtPlayer : MonoBehaviour
                         usedGun = 0;
                     }
                 }
-            }
+         
         }
     }
 
