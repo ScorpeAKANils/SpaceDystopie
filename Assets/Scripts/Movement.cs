@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     private float gravBase;
 
     private bool isWalking = false;
-    private float groundDist = 0.3f;
+    private float groundDist = 0.6f;
   
 
     private bool canClimp = false;
@@ -75,6 +75,9 @@ public class Movement : MonoBehaviour
     public float gravity = 20f;         // Die Gravitation, die auf den Charakter wirkt
     public int WeaponIndex;
 
+    //debug variables
+    private int pressedSpaceCounter;
+    private bool couldJump; 
 
     private void Start()
     {
@@ -101,15 +104,22 @@ public class Movement : MonoBehaviour
         {
             jumpCounter = 0;
         }
-        if (Input.GetButtonDown("Jump") && jumpAble)
+
+        if (Input.GetButtonDown("Jump"))
         {
+            pressedSpaceCounter++; 
+            Debug.Log("space gedrückt " + pressedSpaceCounter);
+        }
+        if (Input.GetButtonDown("Jump") && /*jumpAble*/HandleIsGrounded())
+        {
+            
             if (roofRun)
             {
                 canRoofRun = true;
             }
             PlayerJump();
         
-        }
+        } 
 
         if (Input.GetButtonDown("Jump") && doubleJumpAble)
         {
@@ -137,9 +147,7 @@ public class Movement : MonoBehaviour
             }
             useGravity = false;
             _directionY = jumpForce;
-
-
-        }
+        } 
 
         else if (!wallRunAble)
         {
@@ -186,21 +194,18 @@ public class Movement : MonoBehaviour
         {
             stopLeaning();
         }
-    }
 
-    private void FixedUpdate()
-    {
         // Charakter bewegen
         PlayerMove();
         if (useGravity)
         {
             if (!reverseGravitation)
             {
-                _directionY -= gravity * Time.fixedDeltaTime;
+                _directionY -= gravity * Time.deltaTime;
             }
             else
             {
-                _directionY += gravity * Time.fixedDeltaTime;
+                _directionY += gravity * Time.deltaTime;
             }
         }
         moveDirection.y = _directionY;
@@ -214,10 +219,16 @@ public class Movement : MonoBehaviour
         {
             doubleJumpAble = true;
             isJumping = false;
+            couldJump = true;
             return true;
         }
-        jumpAble = false;
-        return false;
+        else
+        {
+            jumpAble = false;
+            couldJump = false;
+            Debug.Log("konnte nicht springen, weil nicht gegroundet" + pressedSpaceCounter);
+            return false;
+        }
     }
     //wall run check
 

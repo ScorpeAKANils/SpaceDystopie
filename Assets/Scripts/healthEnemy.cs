@@ -8,11 +8,17 @@ public class healthEnemy : MonoBehaviour
     [SerializeField] GameObject gegner;
     public SPAWNER spawnerScript;
     [SerializeField] bool isSpawned;
+    bool despawn = false;
+    [SerializeField] private Material demmaterilizeMat;
+    public EnemyMove Enemy;
+    
 
     public void GetHeadShot()
     {
+        Enemy.isDead = true; 
         spawnerScript.ZombeysAlive--;
-        Destroy(gegner); 
+        gegner.GetComponent<MeshRenderer>().material = demmaterilizeMat;
+        StartCoroutine(wait());
     }
 
     public void GetDamage(float damage)
@@ -20,11 +26,20 @@ public class healthEnemy : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
+            Enemy.isDead = true;
             if (isSpawned)
             {
                 spawnerScript.ZombeysAlive--;
             }
-            Destroy(gegner); 
+            gegner.GetComponent<MeshRenderer>().material = demmaterilizeMat;
+          
+            Debug.Log(gegner.layer.ToString()); 
+            StartCoroutine(wait());
         }
+    }
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gegner); 
     }
 }

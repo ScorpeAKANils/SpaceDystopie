@@ -15,6 +15,7 @@ public class EnemyMove : MonoBehaviour
     public bool canPatroll;
     float Damage = 10f;
     bool isDamageAllowed = true;
+    public bool isDead = false; 
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,12 @@ public class EnemyMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isAttacking); 
+        Debug.Log(isAttacking);
+
+        if (isDead)
+        {
+            return; 
+        }
         if (canPatroll)
         {
             if (isAttacking)

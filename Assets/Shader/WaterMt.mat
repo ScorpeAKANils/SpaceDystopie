@@ -91,7 +91,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0
+    - _Alpha: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BlendOp: 0
@@ -105,14 +105,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Metalic: 29.2
+    - _Metalic: 6.14
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 14
+    - _Smoothness: 8.49
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -120,13 +120,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _brightness: 4.11
-    - _rot: 45
-    - _speed: 0.7
-    - _wavehight: 0.18
+    - _rot: 0
+    - _speed: 0.2
+    - _wavehight: 15.27
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0.2507463, b: 0.4339623, a: 1}
+    - _Color: {r: 0, g: 0.22403327, b: 0.38679248, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _tilling: {r: 60, g: 60, b: 0, a: 0}
+    - _tilling: {r: 300, g: 300, b: 0, a: 0}
   m_BuildTextureStacks: []
