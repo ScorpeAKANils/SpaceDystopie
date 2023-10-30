@@ -176,7 +176,7 @@ public class Movement : MonoBehaviour
 
 
         crouching();
-        if (Input.GetKey(KeyCode.Q))
+        /*if (Input.GetKey(KeyCode.Q))
         {
             Debug.Log("q"); 
             leanLeft();
@@ -193,7 +193,7 @@ public class Movement : MonoBehaviour
         else if(Input.GetKeyUp(KeyCode.E))
         {
             stopLeaning();
-        }
+        }*/
 
         // Charakter bewegen
         PlayerMove();
