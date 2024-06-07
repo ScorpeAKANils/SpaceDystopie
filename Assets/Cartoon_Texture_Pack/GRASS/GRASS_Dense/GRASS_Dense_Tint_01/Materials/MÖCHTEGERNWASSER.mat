@@ -7,20 +7,16 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: "MO\u0308CHTEGERNWASSER"
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ValidKeywords:
-  - _SURFACE_TYPE_TRANSPARENT
+  m_Name: "M\xD6CHTEGERNWASSER"
+  m_Shader: {fileID: -6465566751694194690, guid: 0554c3be728904563bf947b3c1367b7d, type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
-  disabledShaderPasses:
-  - DepthOnly
-  - SHADOWCASTER
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -99,6 +95,7 @@ Material:
     - _Metallic: 0.59
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 1
@@ -108,11 +105,15 @@ Material:
     - _Surface: 1
     - _WorkflowMode: 1
     - _ZWrite: 0
+    - _brightness: 1
+    - _rot: 108.12
+    - _speed: 0.25
     m_Colors:
     - _BaseColor: {r: 0, g: 0.6707778, b: 1, a: 0.48235294}
-    - _Color: {r: 0, g: 0.6707778, b: 1, a: 0.48235294}
+    - _Color: {r: 0, g: 0.5384617, b: 1, a: 0.48235294}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _tilling: {r: 37.5, g: 37.5, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6171100268592356174
 MonoBehaviour:

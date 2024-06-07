@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     private float gravBase;
 
     private bool isWalking = false;
-    private float groundDist = 0.3f;
+    private float groundDist =1f;
     public LayerMask GroundLayer;
 
     private bool canClimp = false;
@@ -378,81 +378,3 @@ public class Movement : MonoBehaviour
         }
     }
 }
-
-/* Unused code, which is obsolote, but maybe, I need him ever again
- 
- 
- 
- **old wall checks**
-     private bool leftWallRun()
-    {
-  
-        if (Physics.Raycast(wallChecks[0].transform.position, wallChecks[0].TransformDirection(Vector3.forward), out wall, 2f, wallLayer))
-        {
-            jumpHight = 3f;
-            useGravity = false;
-            leftWallNearby = true;
-            return true;
-        }
-        return false;
-    }
-   
-    private bool rightWallRun()
-    {
-
-        if (Physics.Raycast(wallChecks[1].transform.position, wallChecks[1].TransformDirection(Vector3.forward), out wall, 2f, wallLayer))
-        {
-            jumpHight = 3f;
-            useGravity = false;
-            rightWallNearBy = true;
-            return true;
-        }
-        return false;
-    }
- 
- 
-        //wall run
-        if (isJumping && leftWallRun() && useGravity && jumpCounter != 0)
-        {
-            /*playerView.transform.rotation = leftLean.rotation;
-            playerView.transform.position = leftLean.position;
-            isWallRunning = true;
-            this.transform.position = Vector3.left * 1 * Time.deltaTime; 
-            Debug.Log("isWallRunning: " + isWallRunning);
-            useGravity = false;
-            wallChecks[0].LookAt(wall.transform.position); 
-        }
-
-        if (isJumping && rightWallRun() && useGravity && jumpCounter != 0)
-        {
-            /*playerView.transform.rotation = rightLean.rotation;
-            playerView.transform.position = rightLean.position;
-            isWallRunning = true;
-            this.transform.position = Vector3.left * 1 * Time.deltaTime;
-            Debug.Log("isWallRunning: " + isWallRunning);
-            useGravity = false;
-            wallChecks[0].LookAt(wall.transform.position);
-        }
-
-        ////spieler stoppt wall running
-            if (!rightWallRun() &&rightWallNearBy || !leftWallRun() && leftWallNearby)
-            {
-                Debug.Log("beginne zu fallen");
-                jumpHight = jumpHightRef;
-                playerView.transform.rotation = idlePos.rotation;
-                playerView.transform.position = idlePos.position;
-                rightWallNearBy = false;
-                leftWallNearby = false;
-                useGravity = true;
-                isWallRunning = false;
-                Debug.Log("sollte gefallen sein");
-            foreach (Transform wallCheck in wallChecks)
-            {
-                wallCheck.transform.rotation = Quaternion.Euler(new Vector3(0,0,0)); 
-            }
-            }
- 
- 
- 
- 
- */
